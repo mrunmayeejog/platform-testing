@@ -169,7 +169,7 @@ class JupyterNotebook(PndaPlugin):
                 values.append(Event(TIMESTAMP_MILLIS(), "jupyter_notebook", "jupyter_notebook.notebook_deletion_ms",
                                     [], notebook_creation_ms))
         except Exception as err:
-            cause = "Unable to create new notebook"
+            cause = "Unable to connect to Jupyter Server"
 
         values.append(Event(TIMESTAMP_MILLIS(), "jupyter_notebook", "jupyter_notebook.notebook_creation",
                             [], notebook_creation))
@@ -191,7 +191,7 @@ class JupyterNotebook(PndaPlugin):
                                     "jupyter_notebook.notebook_deletion_ms",
                                     [], notebook_deletion_ms))
         except Exception as err:
-            cause = "Unable to delete notebook"
+            cause = "Unable to connect to Jupyter Server"
 
         values.append(Event(TIMESTAMP_MILLIS(), "jupyter_notebook", "jupyter_notebook.notebook_deletion",
                             [], notebook_deletion))
