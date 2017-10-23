@@ -81,7 +81,7 @@ class JupyterNotebook(PndaPlugin):
             service_running = True
             service_running_count_ms = end - start
             values.append(Event(TIMESTAMP_MILLIS(), "jupyter_notebook",
-                                "jupyter_notebook.service_running_ms",
+                                "jupyter_notebook.jupyterhub_service_running_ms",
                                 [], service_running_count_ms))
         except Exception:
             cause = "Unable to connect to Jupyter Server"
@@ -163,11 +163,14 @@ class JupyterNotebook(PndaPlugin):
 
             check_req = requests.get("%s/user/pnda/api/contents/Untitled.ipynb" % (options.jnbendpoint),
                                      headers=headers, cookies=cookies, timeout=20)
-            if not 'message' in check_req.json().keys():
+            print ">>>>>>>>>>>>>>>>>>>>",check_req.json().keys()
+            if 'message' not in check_req.json().keys():
                 notebook_creation = True
                 notebook_creation_ms = end - start
-                values.append(Event(TIMESTAMP_MILLIS(), "jupyter_notebook", "jupyter_notebook.notebook_deletion_ms",
+                values.append(Event(TIMESTAMP_MILLIS(), "jupyter_notebook", "jupyter_notebook.notebook_creation_ms",
                                     [], notebook_creation_ms))
+            else:
+                cause = "Unable to create notebook"
         except Exception as err:
             cause = "Unable to connect to Jupyter Server"
 
@@ -190,6 +193,8 @@ class JupyterNotebook(PndaPlugin):
                 values.append(Event(TIMESTAMP_MILLIS(), "jupyter_notebook",
                                     "jupyter_notebook.notebook_deletion_ms",
                                     [], notebook_deletion_ms))
+            else:
+                cause = "Unable to delete notebook"
         except Exception as err:
             cause = "Unable to connect to Jupyter Server"
 
